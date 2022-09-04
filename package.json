@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-api-server-220904",
+  "version": "1.0.0",
+  "description": "NodeJs API with Express and MySQL",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "NODE_ENV=dev nodemon src/index.js",
+    "start:prod": "NODE_ENV=prod node src/index.js"
+  },
+  "author": "zizimoos",
+  "keywords": [
+    "nodejs",
+    "express",
+    "Mysql",
+    "api"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "ip": "^1.1.8",
+    "mysql": "^2.18.1",
+    "pino": "^8.4.2",
+    "pino-pretty": "^9.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
