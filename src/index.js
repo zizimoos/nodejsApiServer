@@ -2,6 +2,7 @@ import express from "express";
 import ip from "ip";
 import cors from "cors";
 import Response from "./domain/response.js";
+import logger from "./utils/logger.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -25,5 +26,5 @@ app.get("/", (req, res) => {
 // console.log(process.env);
 // SERVER_PORT=5000 npm run start:prod
 app.listen(PORT, (req, res) => {
-  console.log(`🟢 sever is running on ${ip.address()} : ${PORT}`);
+  logger.info(`🟢 sever is running on ${ip.address()} : ${PORT}`);
 });
