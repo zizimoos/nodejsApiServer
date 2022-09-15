@@ -12,4 +12,31 @@ const HttpStatus = {
   INTERNAL_SERVER_ERROR: { code: 500, status: INTERNAL_SERVER_ERROR },
 };
 
+export const getPatients = (req, res) => {
+  logger.log(`${req.method} ${req.originalUrl}, fetching patients`);
+  database.query(QUERY.SELECT_PATIENTS, (error, results) => {
+    if (!results) {
+      res
+        .status(HttpStatus.OK.code)
+        .send(
+          new Response(
+            HttpStatus.OK.code,
+            HttpStatus.OK.status,
+            `No patient found`
+          )
+        );
+    }
+    res
+      .status(HttpStatus.OK.code)
+      .send(
+        new Response(
+          HttpStatus.OK.code,
+          HttpStatus.OK.status,
+          `Patients retrievd`,
+          { patients: results }
+        )
+      );
+  });
+};
+
 export default HttpStatus;
