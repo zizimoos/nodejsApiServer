@@ -4,12 +4,12 @@ import logger from "../utils/logger.js";
 import QUERY from "../query/patient.query.js";
 
 const HttpStatus = {
-  OK: { code: 200, status: OK },
-  CREATED: { code: 201, status: CREATED },
-  NO_CONTENT: { code: 204, status: NO_CONTENT },
-  BAD_REQUEST: { code: 400, status: BAD_REQUEST },
-  NOT_FOUND: { code: 404, status: NOT_FOUND },
-  INTERNAL_SERVER_ERROR: { code: 500, status: INTERNAL_SERVER_ERROR },
+  OK: { code: 200, status: "OK" },
+  CREATED: { code: 201, status: "CREATED" },
+  NO_CONTENT: { code: 204, status: "NO_CONTENT" },
+  BAD_REQUEST: { code: 400, status: "BAD_REQUEST" },
+  NOT_FOUND: { code: 404, status: "NOT_FOUND" },
+  INTERNAL_SERVER_ERROR: { code: 500, status: "INTERNAL_SERVER_ERROR" },
 };
 
 export const getPatients = (req, res) => {
@@ -40,13 +40,13 @@ export const getPatients = (req, res) => {
 };
 
 export const createPatient = (req, res) => {
-  logger.log(`${req.method} ${req.originalUrl}, creating patient`);
+  logger.info(`${req.method} ${req.originalUrl}, creating patient`);
   database.query(
     QUERY.CREATE_PATIENT,
     Object.values(req.body),
     (error, results) => {
       if (!results) {
-        logger.error(error.message);
+        logger.info(error.message);
         res
           .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
           .send(

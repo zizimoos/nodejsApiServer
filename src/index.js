@@ -7,6 +7,7 @@ dotenv.config();
 import HttpStatus from "./controller/patient.controller.js";
 import Response from "./domain/response.js";
 import logger from "./utils/logger.js";
+import patientRoutes from "./route/patient.route.js";
 
 const PORT = process.env.SERVER_PORT || 3000;
 const app = express();
@@ -18,6 +19,7 @@ app.use(
 );
 app.use(express.json());
 
+app.use("/patients", patientRoutes);
 app.get("/", (req, res) => {
   res.send(
     new Response(
@@ -25,11 +27,24 @@ app.get("/", (req, res) => {
       HttpStatus.OK.status,
       "Patient API v0.1.0 - All Systems go",
       {
-        patients: { name: "zizimoos" },
+        patients: { name: "nobody" },
       }
     )
   );
 });
+
+app.all("*", (req, res) => {
+  res
+    .status(HttpStatus.NOT_FOUND.code)
+    .send(
+      new Response(
+        HttpStatus.NOT_FOUND.code,
+        HttpStatus.NOT_FOUND.status,
+        "Route does not exist on the server"
+      )
+    );
+});
+
 // console.log(process.env);
 // SERVER_PORT=5000 npm run start:prod
 app.listen(PORT, (req, res) => {

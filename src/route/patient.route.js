@@ -1,11 +1,12 @@
 import express from "express";
+
 import {
   getPatients,
   createPatient,
   getPatient,
   deletePatient,
   updatePatient,
-} from "../controller/patient.controller";
+} from "../controller/patient.controller.js";
 
 const patientRoutes = express.Router();
 
