@@ -13,8 +13,9 @@ const HttpStatus = {
 };
 
 export const getPatients = (req, res) => {
-  logger.log(`${req.method} ${req.originalUrl}, fetching patients`);
+  logger.info(`${req.method} ${req.originalUrl}, fetching patients`);
   database.query(QUERY.SELECT_PATIENTS, (error, results) => {
+    logger.error(error.message);
     if (!results) {
       res
         .status(HttpStatus.OK.code)
@@ -41,12 +42,13 @@ export const getPatients = (req, res) => {
 
 export const createPatient = (req, res) => {
   logger.info(`${req.method} ${req.originalUrl}, creating patient`);
+  console.log(Object.values(req.body));
   database.query(
-    QUERY.CREATE_PATIENT,
+    QUERY.CREATE_PATIENT_PROCEDURE,
     Object.values(req.body),
     (error, results) => {
       if (!results) {
-        logger.info(error.message);
+        logger.error(error.message);
         res
           .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
           .send(
@@ -56,22 +58,24 @@ export const createPatient = (req, res) => {
               `Error occurred`
             )
           );
+      } else {
+        // const patient = {
+        //   id: results.insertId,
+        //   ...req.body,
+        //   created_at: new Date(),
+        // };
+        const patient = results[0][0];
+        res
+          .status(HttpStatus.CREATED.code)
+          .send(
+            new Response(
+              HttpStatus.CREATED.code,
+              HttpStatus.CREATED.status,
+              `Patient created`,
+              { patient }
+            )
+          );
       }
-      const patient = {
-        id: results.insertedId,
-        ...req.body,
-        created_at: new Date(),
-      };
-      res
-        .status(HttpStatus.CREATED.code)
-        .send(
-          new Response(
-            HttpStatus.CREATED.code,
-            HttpStatus.CREATED.status,
-            `Patient created`,
-            { patient }
-          )
-        );
     }
   );
 };
